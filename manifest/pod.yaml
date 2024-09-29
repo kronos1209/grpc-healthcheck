@@ -27,3 +27,4 @@ spec:
         # NamedService のサービス名の指定する
         service: my_service.MyService
       initialDelaySeconds: 10
+      periodSeconds: 10
