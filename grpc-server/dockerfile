@@ -1,0 +1,21 @@
+FROM rust as build
+
+WORKDIR /app
+RUN apt update \
+    && apt upgrade -y \
+    && apt install -y protobuf-compiler libprotobuf-dev
+
+COPY . .
+RUN cargo build --release --package grpc-server --bin server
+
+#############################################################################
+
+FROM ubuntu as runtime
+WORKDIR /server
+
+RUN apt update \
+    && apt upgrade -y 
+
+COPY --from=build /app/target/release/server /server
+
+ENTRYPOINT [ "/server/server" ]

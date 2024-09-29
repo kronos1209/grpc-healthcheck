@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image: test:v1
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+    - containerPort: 8080
+    livenessProbe:
+      grpc:
+        port: 8080
+        service: my_service.MyService
+      initialDelaySeconds: 60
+    # MyService grpc サービスが準備完了状態になっているかどうか healtchcheck を行う
+    readinessProbe:
+      grpc:
+        port: 8080
+        # NamedService のサービス名の指定する
+        service: my_service.MyService
+      initialDelaySeconds: 10

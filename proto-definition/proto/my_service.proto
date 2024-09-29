@@ -1,0 +1,9 @@
+syntax = "proto3";
+package my_service;
+
+message MyRequest {}
+message MyResponse {}
+
+service MyService {
+    rpc Get(MyRequest) returns(MyResponse);
+}
